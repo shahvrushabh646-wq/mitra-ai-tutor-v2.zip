@@ -1,0 +1,457 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "User learning profile, preferences, and current study state without PII.",
+      "type": "object",
+      "properties": {
+        "ownerId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Firebase Auth UID of the student."
+        },
+        "displayName": {
+          "type": "string",
+          "maxLength": 100,
+          "description": "Display name chosen by the student."
+        },
+        "preferredLanguage": {
+          "type": "string",
+          "enum": ["hinglish", "english", "hindi"],
+          "maxLength": 20,
+          "description": "Preferred explanation language."
+        },
+        "explanationDepth": {
+          "type": "string",
+          "enum": ["concise", "step_by_step"],
+          "maxLength": 20,
+          "description": "Preferred detail level in explanations."
+        },
+        "currentDay": {
+          "type": "integer",
+          "description": "Current CMAT study day."
+        },
+        "currentSubject": {
+          "type": "string",
+          "maxLength": 80,
+          "description": "Active subject being studied."
+        },
+        "currentTopicId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$",
+          "description": "Active topic identifier for resume learning."
+        },
+        "studyMinutesToday": {
+          "type": "integer",
+          "description": "Minutes studied in the current day session."
+        },
+        "totalStudyMinutes": {
+          "type": "integer",
+          "description": "Cumulative minutes studied across all days."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server creation timestamp."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server update timestamp."
+        }
+      },
+      "required": [
+        "ownerId",
+        "displayName",
+        "preferredLanguage",
+        "explanationDepth",
+        "currentDay",
+        "currentSubject",
+        "currentTopicId",
+        "studyMinutesToday",
+        "totalStudyMinutes",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "Conversation": {
+      "title": "Conversation",
+      "description": "Chat thread metadata scoped to a student.",
+      "type": "object",
+      "properties": {
+        "ownerId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "subjectTag": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "archived": {
+          "type": "boolean"
+        },
+        "messageCount": {
+          "type": "integer"
+        },
+        "lastMessagePreview": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "ownerId",
+        "title",
+        "subjectTag",
+        "archived",
+        "messageCount",
+        "lastMessagePreview",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "Single message inside a conversation subcollection.",
+      "type": "object",
+      "properties": {
+        "ownerId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "conversationId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["user", "assistant"],
+          "maxLength": 16
+        },
+        "content": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32000
+        },
+        "sourceMode": {
+          "type": "string",
+          "enum": ["live", "offline", "user"],
+          "maxLength": 16
+        },
+        "modelUsed": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "attachmentName": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "ownerId",
+        "conversationId",
+        "role",
+        "content",
+        "sourceMode",
+        "modelUsed",
+        "attachmentName",
+        "createdAt"
+      ]
+    },
+    "TopicProgress": {
+      "title": "TopicProgress",
+      "description": "Structured mastery status for a CMAT syllabus topic.",
+      "type": "object",
+      "properties": {
+        "ownerId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "topicId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "subject": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "status": {
+          "type": "string",
+          "enum": ["not_started", "viewed", "quiz_attempted", "quiz_passed", "mastered"],
+          "maxLength": 24
+        },
+        "bestScore": {
+          "type": "integer"
+        },
+        "totalQuestions": {
+          "type": "integer"
+        },
+        "attemptsCount": {
+          "type": "integer"
+        },
+        "timeSpentMinutes": {
+          "type": "integer"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "ownerId",
+        "topicId",
+        "subject",
+        "status",
+        "bestScore",
+        "totalQuestions",
+        "attemptsCount",
+        "timeSpentMinutes",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "QuizAttempt": {
+      "title": "QuizAttempt",
+      "description": "Immutable completed quiz or mock test attempt record.",
+      "type": "object",
+      "properties": {
+        "ownerId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "quizId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 180
+        },
+        "subject": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "topicId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "score": {
+          "type": "integer"
+        },
+        "total": {
+          "type": "integer"
+        },
+        "accuracyPercent": {
+          "type": "integer"
+        },
+        "durationSeconds": {
+          "type": "integer"
+        },
+        "passed": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["completed"],
+          "maxLength": 16
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "ownerId",
+        "quizId",
+        "title",
+        "subject",
+        "topicId",
+        "score",
+        "total",
+        "accuracyPercent",
+        "durationSeconds",
+        "passed",
+        "status",
+        "createdAt"
+      ]
+    },
+    "ErrorLogEntry": {
+      "title": "ErrorLogEntry",
+      "description": "Mistake notebook entry recording student error and explanation.",
+      "type": "object",
+      "properties": {
+        "ownerId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "questionId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "subject": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "topicId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "questionText": {
+          "type": "string",
+          "maxLength": 3000
+        },
+        "studentAnswer": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "correctAnswer": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "mistakeType": {
+          "type": "string",
+          "enum": ["conceptual", "calculation", "reading", "time_pressure"],
+          "maxLength": 32
+        },
+        "explanation": {
+          "type": "string",
+          "maxLength": 4000
+        },
+        "resolved": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "ownerId",
+        "questionId",
+        "subject",
+        "topicId",
+        "questionText",
+        "studentAnswer",
+        "correctAnswer",
+        "mistakeType",
+        "explanation",
+        "resolved",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "StudyNote": {
+      "title": "StudyNote",
+      "description": "Saved study notes or formula revision cards.",
+      "type": "object",
+      "properties": {
+        "ownerId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 180
+        },
+        "subject": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "topicId": {
+          "type": "string",
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "content": {
+          "type": "string",
+          "maxLength": 16000
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "ownerId",
+        "title",
+        "subject",
+        "topicId",
+        "content",
+        "createdAt",
+        "updatedAt"
+      ]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Root learning profile per authenticated student."
+    },
+    "/users/{userId}/conversations/{conversationId}": {
+      "schema": { "$ref": "#/entities/Conversation" },
+      "description": "Chat conversations belonging to the student."
+    },
+    "/users/{userId}/conversations/{conversationId}/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/ChatMessage" },
+      "description": "Ordered messages within a conversation."
+    },
+    "/users/{userId}/topicProgress/{topicId}": {
+      "schema": { "$ref": "#/entities/TopicProgress" },
+      "description": "Topic-level completion and mastery tracker."
+    },
+    "/users/{userId}/quizAttempts/{attemptId}": {
+      "schema": { "$ref": "#/entities/QuizAttempt" },
+      "description": "Immutable completed quiz and mock test attempts."
+    },
+    "/users/{userId}/errorLog/{errorId}": {
+      "schema": { "$ref": "#/entities/ErrorLogEntry" },
+      "description": "Student mistake log and remediation status."
+    },
+    "/users/{userId}/notes/{noteId}": {
+      "schema": { "$ref": "#/entities/StudyNote" },
+      "description": "Saved notes and formula sheets."
+    }
+  }
+}

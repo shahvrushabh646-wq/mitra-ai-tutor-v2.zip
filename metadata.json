@@ -1,0 +1,6 @@
+{
+  "name": "Mitra AI Tutor",
+  "description": "Conversational AI personal tutor and structured CMAT 2026 preparation platform with persistent multi-turn chat, step-by-step Hinglish and English lessons, PYQ practice, error log, and progress cards.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

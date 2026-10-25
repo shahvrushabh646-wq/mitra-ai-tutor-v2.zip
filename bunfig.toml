@@ -1,0 +1,4 @@
+[install]
+# Prevent socket exhaustion (SYN-SENT deadlock) in Cloud Run / gVisor during cold-start bun install
+networkConcurrency = 8
+concurrentScripts = 4
