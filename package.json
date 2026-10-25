@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
-    "test": "tsx firestore.rules.test.ts && tsx tests/mitra.test.ts"
+    "test": "tsx firestore.rules.test.ts && tsx tests/mitra.test.ts && tsx tests/api.security.test.ts"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
